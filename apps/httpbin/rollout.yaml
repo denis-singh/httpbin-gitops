@@ -18,9 +18,9 @@ spec:
     spec:
       containers:
         - name: httpbin
-          image: kennethreitz/httpbin:latest   # pin a tag or your own image; image changes drive rollouts
+          image: ghcr.io/mccutchen/go-httpbin   # pin a tag or your own image; image changes drive rollouts
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: APP_VERSION
               value: "v5"
