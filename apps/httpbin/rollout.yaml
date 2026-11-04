@@ -14,7 +14,7 @@ spec:
       labels:
         app: httpbin
       annotations:
-        release: "4"
+        release: "5"
     spec:
       containers:
         - name: httpbin
@@ -23,31 +23,31 @@ spec:
             - containerPort: 80
           env:
             - name: APP_VERSION
-              value: "v4"
-strategy:
-  canary:
-    stableService: httpbin-stable
-    canaryService: httpbin-canary
-    trafficRouting:
-      managedRoutes:
-        - name: canary-header-route
-      plugins:
-        argoproj-labs/gatewayAPI:
-          httpRoute: httpbin
-          namespace: httpbin
-    steps:
-      - setCanaryScale:
-          replicas: 1
-      - setHeaderRoute:
-          name: canary-header-route
-          match:
-            - headerName: x-canary
-              headerValue:
-                exact: "true"
-      - pause: {}              # test with the header here, 0% real traffic
-      - setWeight: 20
-      - pause: {}
-      - setWeight: 50
-      - pause: {duration: 60s}
-      - setHeaderRoute:
-          name: canary-header-route   # no match = remove the header route
+              value: "v5"
+  strategy:
+    canary:
+      stableService: httpbin-stable
+      canaryService: httpbin-canary
+      trafficRouting:
+        managedRoutes:
+          - name: canary-header-route
+        plugins:
+          argoproj-labs/gatewayAPI:
+            httpRoute: httpbin
+            namespace: httpbin
+      steps:
+        - setCanaryScale:
+            replicas: 1
+        - setHeaderRoute:
+            name: canary-header-route
+            match:
+              - headerName: x-canary
+                headerValue:
+                  exact: "true"
+        - pause: {}              # test with the header here, 0% real traffic
+        - setWeight: 20
+        - pause: {}
+        - setWeight: 50
+        - pause: {duration: 60s}
+        - setHeaderRoute:
+            name: canary-header-route   # no match = remove the header route
