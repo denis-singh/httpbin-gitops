@@ -19,6 +19,9 @@ spec:
           image: kennethreitz/httpbin:test   # pin a tag or your own image; image changes drive rollouts
           ports:
             - containerPort: 80
+          env:
+            - name: APP_VERSION
+              value: "v3"
 strategy:
   canary:
     stableService: httpbin-stable
