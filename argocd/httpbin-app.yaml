@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/<org>/httpbin-gitops.git
+    repoURL: https://github.com/denis-singh/httpbin-gitops.git
     targetRevision: main
     path: apps/httpbin
   destination:
