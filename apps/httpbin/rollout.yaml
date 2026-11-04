@@ -14,16 +14,16 @@ spec:
       labels:
         app: httpbin
       annotations:
-        release: "5"
+        release: "7"
     spec:
       containers:
         - name: httpbin
-          image: ghcr.io/mccutchen/go-httpbin   # pin a tag or your own image; image changes drive rollouts
+          image: kennethreitz/httpbin:test   # pin a tag or your own image; image changes drive rollouts
           ports:
             - containerPort: 80
           env:
             - name: APP_VERSION
-              value: "v5"
+              value: "v7"
   strategy:
     canary:
       stableService: httpbin-stable
