@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         app: httpbin
+      annotations:
+        release: "3"
     spec:
       containers:
         - name: httpbin
