@@ -1,0 +1,11 @@
+apiVersion: gateway.solo.io/v1
+kind: RouteOption
+metadata:
+  name: ratelimit
+  namespace: httpbin
+spec:
+  options:
+    rateLimitConfigs:
+      refs:
+      - name: ratelimit-config
+        namespace: gloo-system

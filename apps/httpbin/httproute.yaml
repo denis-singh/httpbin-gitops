@@ -10,6 +10,12 @@ spec:
   hostnames:
     - "httpbin.denissingh.com"
   rules:
+    - filters:  
+      - type: ExtensionRef
+        extensionRef:
+          group: gateway.solo.io
+          kind: RouteOption
+          name: ratelimit
     - backendRefs:
         - name: httpbin-stable
           port: 8000
