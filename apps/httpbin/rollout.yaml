@@ -16,20 +16,33 @@ spec:
     spec:
       containers:
         - name: httpbin
-          image: kennethreitz/httpbin:latest   # pin a tag or your own image; image changes drive rollouts
+          image: kennethreitz/httpbin:test   # pin a tag or your own image; image changes drive rollouts
           ports:
             - containerPort: 80
-  strategy:
-    canary:
-      stableService: httpbin-stable
-      canaryService: httpbin-canary
-      trafficRouting:
-        plugins:
-          argoproj-labs/gatewayAPI:
-            httpRoute: httpbin
-            namespace: httpbin
-      steps:
-        - setWeight: 20
-        - pause: {}              # manual promote
-        - setWeight: 50
-        - pause: {duration: 60s}
+strategy:
+  canary:
+    stableService: httpbin-stable
+    canaryService: httpbin-canary
+    trafficRouting:
+      managedRoutes:
+        - name: canary-header-route
+      plugins:
+        argoproj-labs/gatewayAPI:
+          httpRoute: httpbin
+          namespace: httpbin
+    steps:
+      - setCanaryScale:
+          replicas: 1
+      - setHeaderRoute:
+          name: canary-header-route
+          match:
+            - headerName: x-canary
+              headerValue:
+                exact: "true"
+      - pause: {}              # test with the header here, 0% real traffic
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 50
+      - pause: {duration: 60s}
+      - setHeaderRoute:
+          name: canary-header-route   # no match = remove the header route
