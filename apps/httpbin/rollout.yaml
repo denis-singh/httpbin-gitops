@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: httpbin
-          image: kennethreitz/httpbin:test   # pin a tag or your own image; image changes drive rollouts
+          image: kennethreitz/httpbin:latest   # pin a tag or your own image; image changes drive rollouts
           ports:
             - containerPort: 80
   strategy:
