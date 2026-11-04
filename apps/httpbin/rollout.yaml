@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: httpbin
+  namespace: httpbin
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      labels:
+        app: httpbin
+    spec:
+      containers:
+        - name: httpbin
+          image: kennethreitz/httpbin:test   # pin a tag or your own image; image changes drive rollouts
+          ports:
+            - containerPort: 80
+  strategy:
+    canary:
+      stableService: httpbin-stable
+      canaryService: httpbin-canary
+      trafficRouting:
+        plugins:
+          argoproj-labs/gatewayAPI:
+            httpRoute: httpbin
+            namespace: httpbin
+      steps:
+        - setWeight: 20
+        - pause: {}              # manual promote
+        - setWeight: 50
+        - pause: {duration: 60s}
