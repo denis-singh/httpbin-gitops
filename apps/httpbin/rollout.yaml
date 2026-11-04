@@ -14,16 +14,16 @@ spec:
       labels:
         app: httpbin
       annotations:
-        release: "3"
+        release: "4"
     spec:
       containers:
         - name: httpbin
-          image: kennethreitz/httpbin:test   # pin a tag or your own image; image changes drive rollouts
+          image: kennethreitz/httpbin:latest   # pin a tag or your own image; image changes drive rollouts
           ports:
             - containerPort: 80
           env:
             - name: APP_VERSION
-              value: "v3"
+              value: "v4"
 strategy:
   canary:
     stableService: httpbin-stable
