@@ -4,6 +4,4 @@ resources:
   - namespace.yaml
   - rollout.yaml
   - services.yaml
-  - ratelimit.yaml
-  - routeoption.yaml
   - httproute.yaml
